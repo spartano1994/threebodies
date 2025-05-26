@@ -5,13 +5,21 @@ from matplotlib.collections import LineCollection
 from objetos import *
 
 # Creación de las masas
+bodies = [              
+    Body( "m_1" , 10 , 10, 10 , 0.1 , 0.1 ),
+    Body( "m_2" , 40 , 10, 11 , 0.2 , 0.7 ),
+    Body( "m_3" , 25 , 25, 12 , 0.1 , -0.5 ) ]          #Configuración arbitraria
+
+"""
 bodies = [
-    Body( "m_1" , 25 , 25, 10 , 0.1 , 0.1 ),
-    Body( "m_2" , 12 , 20, 11 , 0.2 , 0.7 ),
-    Body( "m_3" , 37 , 9, 12 , 0.1 , -0.5 ) ]
+    Body( "m_1" , 10 , 10, 10 , 0.1 , 0.1 ),
+    Body( "m_2" , 40 , 10, 11 , 0.2 , 0.7 ),
+    Body( "m_3" , 25 , 25, 12 , 0.1 , -0.5 ) ] """       #Problema colineal
 
 # Posiciones iniciales (todas en (1,1))
-positions = np.array([[25 , 25] , [12 , 20] , [37 , 9 ]])
+positions = np.array([[bodies[0].x , bodies[0].y] , 
+                      [bodies[1].x , bodies[1].y] , 
+                      [bodies[2].x , bodies[2].y ]])
 
 # Configuración inicial
 fig, ax = plt.subplots(figsize=(10, 8))
@@ -33,7 +41,7 @@ points = [ax.plot([], [], 'o', color=colors[i], label=labels[i])[0] for i in ran
 ax.legend()
 
 # Crear colecciones de líneas para las estelas
-line_segments = [LineCollection([], colors=colors[i], linewidths=1, alpha=0.5) for i in range(len(bodies))]
+line_segments = [LineCollection([], colors=colors[i], linewidths=1, alpha=0.5 ) for i in range(len(bodies))]
 for line in line_segments:
     ax.add_collection(line)
 
@@ -81,8 +89,9 @@ def update(frame):
         # Actualizar estela (mostrar solo los últimos 20 puntos)
         if len(trajectories[i]) > 1:
             segments = np.array([trajectories[i][j:j+2] for j in range(len(trajectories[i])-1)])
-            line_segments[i].set_segments(segments[-20:])  # Limitar la longitud de la estela
-    
+            line_segments[i].set_segments(segments[-20:])  # Limitar la longitud de la estela a 20 puntos
+            #line_segments[i].set_segments(segments[-20:])  #Estela completa 
+
         # Ajustar límites si los puntos se salen del área visible
     if np.any(positions > 9) or np.any(positions < 1):
         ax.set_xlim(min(1, *positions[:, 0]-1), max(10, *positions[:, 0]+1))
