@@ -5,16 +5,18 @@ from matplotlib.collections import LineCollection
 from objetos import *
 
 # Creación de las masas
-bodies = [              
-    Body( "m_1" , 10 , 10, 10 , 0.1 , 0.1 ),
-    Body( "m_2" , 40 , 10, 11 , 0.2 , 0.7 ),
-    Body( "m_3" , 25 , 25, 12 , 0.1 , -0.5 ) ]          #Configuración arbitraria
 
-"""
-bodies = [
-    Body( "m_1" , 10 , 10, 10 , 0.1 , 0.1 ),
-    Body( "m_2" , 40 , 10, 11 , 0.2 , 0.7 ),
-    Body( "m_3" , 25 , 25, 12 , 0.1 , -0.5 ) ] """       #Problema colineal
+"""m=150
+bodies = [              
+    Body( "m_1" , -50 , 0,m, -np.sin(np.pi/6) , np.cos(np.pi/6) ),
+    Body( "m_2" , 50 , 0, m , -np.sin(np.pi/6) , -np.cos(np.pi/6) ),
+    Body( "m_3" , 0 , 100*np.sin(np.pi/3),m, 1 , 0 ) ]         #Configuración arbitraria """
+
+
+"""bodies = [
+    Body( "m_1" , -5*2 , -5*5, 10 , 0.1 , 0.1 ),
+    Body( "m_2" , 2 , 5, 11 , 0.2 , 0.7 ),
+    Body( "m_3" , 7*2 , 7*5, 12 , 0.1 , -0.5 ) ]  """  #Problema colineal
 
 # Posiciones iniciales (todas en (1,1))
 positions = np.array([[bodies[0].x , bodies[0].y] , 
@@ -22,9 +24,10 @@ positions = np.array([[bodies[0].x , bodies[0].y] ,
                       [bodies[2].x , bodies[2].y ]])
 
 # Configuración inicial
+square_lim = 300
 fig, ax = plt.subplots(figsize=(10, 8))
-ax.set_xlim(0, 50)
-ax.set_ylim(0, 50)
+ax.set_xlim(-square_lim, square_lim)
+ax.set_ylim(-square_lim, square_lim)
 ax.set_aspect('equal')
 ax.grid(True)
 ax.set_title('Problema de los tres cuerpos')
@@ -89,18 +92,18 @@ def update(frame):
         # Actualizar estela (mostrar solo los últimos 20 puntos)
         if len(trajectories[i]) > 1:
             segments = np.array([trajectories[i][j:j+2] for j in range(len(trajectories[i])-1)])
-            line_segments[i].set_segments(segments[-20:])  # Limitar la longitud de la estela a 20 puntos
-            #line_segments[i].set_segments(segments[-20:])  #Estela completa 
+            #line_segments[i].set_segments(segments[-20:])  # Limitar la longitud de la estela a 20 puntos
+            line_segments[i].set_segments(segments[:])  #Estela completa 
 
         # Ajustar límites si los puntos se salen del área visible
-    if np.any(positions > 9) or np.any(positions < 1):
+    """if np.any(positions > 9) or np.any(positions < 1):
         ax.set_xlim(min(1, *positions[:, 0]-1), max(10, *positions[:, 0]+1))
-        ax.set_ylim(min(1, *positions[:, 1]-1), max(10, *positions[:, 1]+1))
+        ax.set_ylim(min(1, *positions[:, 1]-1), max(10, *positions[:, 1]+1))"""
     
     return points + line_segments
 
 # Crear la animación
 ani = FuncAnimation(fig, update, frames=800, init_func=init, 
-                    blit=True, interval=50)
+                    blit=True, interval=5)
 
 plt.show()
