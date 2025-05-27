@@ -18,13 +18,30 @@ bodies = [
     Body( "m_2" , 2 , 5, 11 , 0.2 , 0.7 ),
     Body( "m_3" , 7*2 , 7*5, 12 , 0.1 , -0.5 ) ]  """  #Problema colineal
 
+"""bodies = [
+    Body( "m_1" , -5*2 , -5*5, 2 , 0.1 , 0.1 ),
+    Body( "m_2" , 2 , 5, 1 , 0.2 , 0.7 ),
+    Body( "m_3" , 7*2 , 7*5, 5 , 0.1 , -0.5 ) ]    #Problema colineal"""
+
+# En main.py
+#c_1 , c_2 , c_3 =  -1.598745, -0.598745, 0.759247
+#c_1 , c_2 , c_3 = -1.59874452659608001781066377589013, -0.59874452659607979576605885085883, 0.75924671239060126382014459522907
+c_1 , c_2 , c_3 = -1.59874452659608001781066377589013427495956420898437500000000000000000000000000000000000000000000000000000000000000000000000000000, -0.59874452659607979576605885085882619023323059082031250000000000000000000000000000000000000000000000000000000000000000000000000000, 0.75924671239060126382014459522906690835952758789062500000000000000000000000000000000000000000000000000000000000000000000000000000
+u_y=1.2
+R_0 = 120
+bodies = [
+    Body("m1", x=R_0*c_1, y=0, mass=200, vx=0, vy=c_1*u_y),
+    Body("m2", x=R_0*c_2,   y=0, mass=100, vx=0, vy=c_2*u_y),
+    Body("m3", x=R_0*c_3,  y=0, mass=500, vx=0, vy=c_3*u_y)
+]
+
 # Posiciones iniciales (todas en (1,1))
 positions = np.array([[bodies[0].x , bodies[0].y] , 
                       [bodies[1].x , bodies[1].y] , 
                       [bodies[2].x , bodies[2].y ]])
 
 # Configuración inicial
-square_lim = 300
+square_lim = 500
 fig, ax = plt.subplots(figsize=(10, 8))
 ax.set_xlim(-square_lim, square_lim)
 ax.set_ylim(-square_lim, square_lim)
@@ -104,6 +121,6 @@ def update(frame):
 
 # Crear la animación
 ani = FuncAnimation(fig, update, frames=800, init_func=init, 
-                    blit=True, interval=5)
+                    blit=True, interval=0.5)
 
 plt.show()

@@ -122,4 +122,4 @@ class Body:
         return f"{self.label} = {self.mass}kg , position = {self.position} , velocity = {self.velocity}, aceleration = {self.aceleration}"
     
 
-G = 0.6
+G = 1
