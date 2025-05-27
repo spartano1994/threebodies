@@ -29,6 +29,7 @@ bodies = [
 c_1 , c_2 , c_3 = -1.59874452659608001781066377589013427495956420898437500000000000000000000000000000000000000000000000000000000000000000000000000000, -0.59874452659607979576605885085882619023323059082031250000000000000000000000000000000000000000000000000000000000000000000000000000, 0.75924671239060126382014459522906690835952758789062500000000000000000000000000000000000000000000000000000000000000000000000000000
 u_y=1.2
 R_0 = 120
+step = 0.25
 bodies = [
     Body("m1", x=R_0*c_1, y=0, mass=200, vx=0, vy=c_1*u_y),
     Body("m2", x=R_0*c_2,   y=0, mass=100, vx=0, vy=c_2*u_y),
@@ -86,12 +87,12 @@ def update(frame):
         a = Newton_mechanics.law2( bodies[i] , F  )
 
         # Calcular nuevo punto 1
-        new_x = Newton_mechanics.update_position( bodies[i].position , bodies[i].velocity , a , t_step=0.5 ).x
-        new_y = Newton_mechanics.update_position( bodies[i].position , bodies[i].velocity , a , t_step=0.5 ).y
+        new_x = Newton_mechanics.update_position( bodies[i].position , bodies[i].velocity , a , t_step=step ).x
+        new_y = Newton_mechanics.update_position( bodies[i].position , bodies[i].velocity , a , t_step=step ).y
         positions[i] = [new_x, new_y]
 
-        new_vx = Newton_mechanics.update_velocity(bodies[i].velocity, a , t_step=0.5).x
-        new_vy = Newton_mechanics.update_velocity(bodies[i].velocity, a , t_step=0.5).y
+        new_vx = Newton_mechanics.update_velocity(bodies[i].velocity, a , t_step=step).x
+        new_vy = Newton_mechanics.update_velocity(bodies[i].velocity, a , t_step=step).y
 
 
 
@@ -121,6 +122,6 @@ def update(frame):
 
 # Crear la animación
 ani = FuncAnimation(fig, update, frames=800, init_func=init, 
-                    blit=True, interval=0.5)
+                    blit=True, interval=1e-20)
 
 plt.show()
